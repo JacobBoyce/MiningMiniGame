@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class MiningManager : MonoBehaviour
 {
@@ -32,6 +33,12 @@ public class MiningManager : MonoBehaviour
     [Space(10)]
     public float perfectRange;
     public float aweRange;    
+
+    [Header("Mining UI")]
+    public TextMeshProUGUI resultText;
+    public TextMeshProUGUI rewardText, xpText, oresRecievedText;
+    private int largeOreTotal, smallOreTotal;
+    public GameObject miningResults;
 
     [Header("Visual stuff")]
     public TMP_InputField power;
@@ -128,6 +135,10 @@ public class MiningManager : MonoBehaviour
 
     public void SpawnTarget()
     {
+        //turn off ui that showed the result
+        resultText.gameObject.SetActive(false);
+        rewardText.gameObject.SetActive(false);
+
         //spawn and set the location of the target and crosshair
         curTarget = Instantiate(targetPrefab, Vector3.zero, Quaternion.identity);
         crosshair = Instantiate(crosshairPrefab, Vector3.zero, Quaternion.identity);
@@ -185,59 +196,53 @@ public class MiningManager : MonoBehaviour
 
                 //calc distance to get score
                 float dist = Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition);
+                //turn on text ui to see result
+                resultText.gameObject.SetActive(true);
+                rewardText.gameObject.SetActive(true);
+
+                //roll to see what rewards you get for specific performance
+                int roll = Random.Range(0, 100);
                 if(dist <= perfectRange)
                 {
-                    uiText.text = "Perfect";
+                    resultText.text = "Perfect!";
                     curScore = 2;
+
+                    if(roll <= chancePerf)
+                    {
+                        rewardText.text = "Got\n" + targetOre.name + " (Lg)!";
+                        largeOreTotal++;
+                    }
+                    else
+                    {
+                        rewardText.text = "Got\n" + targetOre.name + " (Sm)!";
+                        smallOreTotal++;
+                    }
                     
                 }
                 else if(dist > perfectRange && dist < aweRange)
                 {
-                    uiText.text = "Awesome";
+                    resultText.text = "Great!";
                     curScore = 1;
+
+                    if(roll <= chanceAwe)
+                    {
+                        rewardText.text = "Got\n" + targetOre.name + " (Sm)!";
+                        smallOreTotal++;
+                    }
+                    else
+                    {
+                        rewardText.text = "No Luck...";
+                    }
                 }
                 else
                 {
                     //if bad then the player missed, which ends the mining operation
                     //bool to stop the loop
-                    uiText.text = "Bad";
+                    resultText.text = "whoops...";
+                    rewardText.text = "";
                     curScore = 0;
                 }
-
-                //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-                //add score values to get rewards
                 completedScore += curScore;
-                int roll = Random.Range(0, 100);
-                if(curScore == 2)
-                {
-                    //aquire a big rock at a higher percentage
-                    if(roll <= chancePerf)
-                    {
-                        Debug.Log("Got Big Rock!");
-                    }
-                    else
-                    {
-                        Debug.Log("Got Small Rock!");
-                    }
-                }
-                else if(curScore == 1)
-                {
-                    //aquire a small rock with a chance of getting nothing (small chance)
-                    //if focus is high have a bigger chance at getting a rock for sure. and if at 100% then have a chance of getting a big rock
-                    if(roll <= chanceAwe)
-                    {
-                        Debug.Log("Got Small Rock!");
-                    }
-                    else
-                    {
-                        Debug.Log("Got No Rock!");
-                    }
-                }
-                else
-                {
-                    //no rock given
-                    Debug.Log("Got No Rock!");
-                }
 
                 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
                 //make sparks fly and add force to rocks -- pass in score to show certain rock animations
@@ -253,9 +258,14 @@ public class MiningManager : MonoBehaviour
                     curLoop++;
                     StartCoroutine(SpawnTargetLoop(2f));
                 }
+                else
+                {
+                    //mining completed
+                    StartCoroutine("MiningCompleted");
+                }
                 targetStart = false;
             }
-                #region view target distance constantly
+                /*#region view target distance constantly
                 //***Constantly View target distance***\\
                 float dist2 = Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition);
                 if(dist2 <= perfectRange)
@@ -271,8 +281,30 @@ public class MiningManager : MonoBehaviour
                     uiText.text = "Bad";
                 }
                 
-                #endregion
+                #endregion*/
         } 
+    }
+
+    public IEnumerator MiningCompleted()
+    {
+        yield return new WaitForSeconds(2f);
+        //turn of result and reward ui and others
+        resultText.gameObject.SetActive(false);
+        rewardText.gameObject.SetActive(false);
+        joystick.gameObject.SetActive(false);
+
+        //turn on end mining results
+        miningResults.SetActive(true);
+        completedScore *= 10;
+        xpText.text = (completedScore).ToString();
+        string temp1 = largeOreTotal == 0 ? "" : "+" + largeOreTotal + " " + targetOre.name + " (Lg)\n";
+        string temp2 = smallOreTotal == 0 ? "" : "+" + smallOreTotal + " " + targetOre.name + " (Sm)";
+        oresRecievedText.text = temp1 + temp2;
+
+        PlayerPrefs.SetInt("XPtoget",completedScore);
+        PlayerPrefs.SetInt("LargeOreTotal", largeOreTotal);
+        PlayerPrefs.SetInt("SmallOreTotal", smallOreTotal);
+        PlayerPrefs.SetInt("Justmined?", 1);
     }
 
     //Moving the crosshair
@@ -329,4 +361,10 @@ public class MiningManager : MonoBehaviour
         clamp = float.Parse(limit.text);
         maxTime = float.Parse(timer.text);
     }
+
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene("MiningSearch");
+    }
+
 }
