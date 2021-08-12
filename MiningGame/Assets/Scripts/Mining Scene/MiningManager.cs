@@ -19,6 +19,7 @@ public class MiningManager : MonoBehaviour
     public float maxTime = 5f, curTime;
     private bool targetStart = false;
     private int randDirectionVal, randSignVal;
+    public Vector2 targetPos1, targetPos2, targetPos3;
 
     [Header("Init stuff")]
     public int targetLoopNum;
@@ -42,16 +43,21 @@ public class MiningManager : MonoBehaviour
     [Header("Visual Rock Stuff")]
     [SerializeField]
     public List<GameObject> rocks;
-    private int i = 0;
+    private int rockPileIterator = 0;
     private Vector2 bb;
+
+    [Header("Probability and Score")]
+    public int completedScore;
+    public int curScore;
+    private int chancePerf = 75, chanceAwe = 80;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
-        i =0;
-        bb = new Vector2((float)cv.GetComponent<RectTransform>().sizeDelta.x / 2f, (float)cv.GetComponent<RectTransform>().sizeDelta.y / 2f);
+        rockPileIterator = 0;
+        completedScore = 0;
         //ui updating
         power.text = str.ToString();
         crossStr.text = crosshairStr.ToString();
@@ -79,33 +85,43 @@ public class MiningManager : MonoBehaviour
     {
         /*
             <->adjust all vars by player level %
-            ->adjust power by player power
             ->adjust clamp/crosshairStr by player focus
+            ->percentage of winning rocks are affected by level and players focus (level first then focus)
         */
+        //if the player is higher
         if(plevel > targetOre.level)
         {
             int diff = plevel - targetOre.level;
             if(diff >= 2)
             {
                 //favors player
-                targetOre.durability = targetOre.durability - (int)(targetOre.durability * .2f);
+                targetOre.durability = targetOre.durability - (int)(targetOre.durability * .4f);
+                targetOre.maxVel = targetOre.maxVel - (int)(targetOre.maxVel *.2f);
+                chancePerf += 25;
+                chanceAwe += 20;
             }
             else if(diff == 1)
             {
-                targetOre.durability = targetOre.durability - (int)(targetOre.durability * .1f);
+                targetOre.durability = targetOre.durability - (int)(targetOre.durability * .2f);
+                targetOre.maxVel = targetOre.maxVel - (int)(targetOre.maxVel *.1f);
+                chancePerf += 10;
+                chanceAwe += 10;
             }
         }
+        //if the player is lower
         else if(plevel < targetOre.level)
         {
             int diff2 = targetOre.level - plevel;
             if(diff2 >= 2)
             {
-                //favors player
+                //favors rock
                 targetOre.durability = targetOre.durability + (int)(targetOre.durability * .2f);
+                targetOre.maxVel = targetOre.maxVel + (int)(targetOre.maxVel *.2f);
             }
             else if(diff2 == 1)
             {
                 targetOre.durability = targetOre.durability + (int)(targetOre.durability * .1f);
+                targetOre.maxVel = targetOre.maxVel + (int)(targetOre.maxVel *.1f);
             }
         }
     }
@@ -117,13 +133,27 @@ public class MiningManager : MonoBehaviour
         crosshair = Instantiate(crosshairPrefab, Vector3.zero, Quaternion.identity);
 
         curTarget.transform.SetParent(targetParent.transform);
-        curTarget.transform.localPosition = new Vector3(0,100,0);
-
         crosshair.transform.SetParent(targetParent.transform);
-        crosshair.transform.localPosition = new Vector3(0,100,0);
         rb = crosshair.GetComponent<Rigidbody2D>();
 
         RectTransform CanvasRect = cv.GetComponent<RectTransform>();
+
+        //update location of target on rocks
+        if(rockPileIterator == 0)
+        {  
+            curTarget.transform.localPosition = targetPos1;
+            crosshair.transform.localPosition = targetPos1;
+        }
+        else if(rockPileIterator == 1)
+        {
+            curTarget.transform.localPosition = targetPos2;
+            crosshair.transform.localPosition = targetPos2;
+        }
+        else if(rockPileIterator == 2)
+        {
+            curTarget.transform.localPosition = targetPos3;
+            crosshair.transform.localPosition = targetPos3;
+        }
         
         //set current time and update pos for moving the crosshair, bool for triggering the movement
         curRefreshRate = Random.Range(refreshRateMin, refreshRateMax);
@@ -154,35 +184,70 @@ public class MiningManager : MonoBehaviour
                 rb.simulated = false;
 
                 //calc distance to get score
-                float dist = Vector2.Distance(rb.gameObject.transform.localPosition, new Vector2(0,0));
+                float dist = Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition);
                 if(dist <= perfectRange)
                 {
                     uiText.text = "Perfect";
+                    curScore = 2;
+                    
                 }
                 else if(dist > perfectRange && dist < aweRange)
                 {
                     uiText.text = "Awesome";
+                    curScore = 1;
                 }
                 else
                 {
                     //if bad then the player missed, which ends the mining operation
                     //bool to stop the loop
                     uiText.text = "Bad";
+                    curScore = 0;
                 }
+
+                //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
+                //add score values to get rewards
+                completedScore += curScore;
+                int roll = Random.Range(0, 100);
+                if(curScore == 2)
+                {
+                    //aquire a big rock at a higher percentage
+                    if(roll <= chancePerf)
+                    {
+                        Debug.Log("Got Big Rock!");
+                    }
+                    else
+                    {
+                        Debug.Log("Got Small Rock!");
+                    }
+                }
+                else if(curScore == 1)
+                {
+                    //aquire a small rock with a chance of getting nothing (small chance)
+                    //if focus is high have a bigger chance at getting a rock for sure. and if at 100% then have a chance of getting a big rock
+                    if(roll <= chanceAwe)
+                    {
+                        Debug.Log("Got Small Rock!");
+                    }
+                    else
+                    {
+                        Debug.Log("Got No Rock!");
+                    }
+                }
+                else
+                {
+                    //no rock given
+                    Debug.Log("Got No Rock!");
+                }
+
                 //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
-                //make sparks fly and add force to rocks
-                //sparks spawn on cross hair
-                rocks[i].GetComponent<RockPileController>().TurnOnRocks();
-                i++;
-                //obj move to hit the rocks
-                
-            
-                //add force @ pos of rocks[i] .forward
-                
+                //make sparks fly and add force to rocks -- pass in score to show certain rock animations
+                rocks[rockPileIterator].GetComponent<RockPileController>().TurnOnRocks(curScore);
+                rockPileIterator++;
+                //obj move to hit the rocks                
 
                 //RESET HERE TO CALL THE SPAWN TARGET COROUTINE
-                Destroy(curTarget, 1f);
-                Destroy(crosshair, 1f);
+                Destroy(curTarget);
+                Destroy(crosshair);
                 if(curLoop < targetLoopNum)
                 {
                     curLoop++;
@@ -191,8 +256,8 @@ public class MiningManager : MonoBehaviour
                 targetStart = false;
             }
                 #region view target distance constantly
-                /*//***Constantly View target distance***\\
-                float dist2 = Vector2.Distance(rb.gameObject.transform.localPosition, new Vector2(0,0));
+                //***Constantly View target distance***\\
+                float dist2 = Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition);
                 if(dist2 <= perfectRange)
                 {
                     uiText.text = "Perfect";
@@ -201,15 +266,11 @@ public class MiningManager : MonoBehaviour
                 {
                     uiText.text = "Awesome";
                 }
-                else if(dist2 > aweRange && dist2 < goodRange)
-                {
-                    uiText.text = "Good";
-                }
                 else
                 {
                     uiText.text = "Bad";
                 }
-                */
+                
                 #endregion
         } 
     }
@@ -231,7 +292,7 @@ public class MiningManager : MonoBehaviour
             rb.velocity += new Vector2(joystick.Horizontal*str, joystick.Vertical*str);
             
             //check if too far away from the target to stop the cross hair
-            if(Vector2.Distance(rb.gameObject.transform.localPosition, new Vector2(0,0)) < 400)
+            if(Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition) < 400)
             {
                 //check which direction to move
                 if(randDirectionVal == 1)

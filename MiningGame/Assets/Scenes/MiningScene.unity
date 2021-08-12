@@ -1206,6 +1206,7 @@ MonoBehaviour:
   - {fileID: 550692921}
   - {fileID: 58910177}
   - {fileID: 1229710729}
+  rocksToBlowup: []
   expl: {fileID: 1832327347}
 --- !u!1001 &256267767
 PrefabInstance:
@@ -3584,6 +3585,9 @@ MonoBehaviour:
   targetParent: {fileID: 2098358596}
   maxTime: 3
   curTime: 0
+  targetPos1: {x: -70.02, y: 338.62}
+  targetPos2: {x: 152.73, y: 224.7}
+  targetPos3: {x: -64.7, y: 7}
   targetLoopNum: 3
   curLoop: 1
   initialWaitTime: 1
@@ -3591,8 +3595,8 @@ MonoBehaviour:
   str: 60
   clamp: 100
   crosshairStr: 1000
-  perfectRange: 33
-  aweRange: 65
+  perfectRange: 75
+  aweRange: 170
   power: {fileID: 994205694}
   crossStr: {fileID: 17907005}
   limit: {fileID: 443655772}
@@ -3602,6 +3606,8 @@ MonoBehaviour:
   - {fileID: 1968845621}
   - {fileID: 1711689910}
   - {fileID: 229859578}
+  completedScore: 0
+  curScore: 0
 --- !u!4 &801814439
 Transform:
   m_ObjectHideFlags: 0
@@ -5918,6 +5924,7 @@ MonoBehaviour:
   - {fileID: 1753468281}
   - {fileID: 961118324}
   - {fileID: 1365639315}
+  rocksToBlowup: []
   expl: {fileID: 1571334760}
 --- !u!1 &1715323526
 GameObject:
@@ -5953,7 +5960,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 18, y: -133}
+  m_AnchoredPosition: {x: 28, y: 536}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1715323528
@@ -6915,6 +6922,7 @@ MonoBehaviour:
   - {fileID: 197312702}
   - {fileID: 2042667706}
   - {fileID: 51542185}
+  rocksToBlowup: []
   expl: {fileID: 1010480857}
 --- !u!1 &2017861216 stripped
 GameObject:
