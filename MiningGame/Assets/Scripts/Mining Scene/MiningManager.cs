@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class MiningManager : MonoBehaviour
 {
-    public Camera cam;
-    public Canvas cv;
-    public TextMeshProUGUI uiText;
+    public CinemachineController camController;
     public Joystick joystick;
 
     [Header("Target Vars")]
-    public GameObject targetPrefab, crosshairPrefab;
-    public GameObject targetParent;
+    public GameObject targetPrefab;
+    public GameObject targetParent, crosshairPrefab;
     private GameObject curTarget, crosshair;
     private Rigidbody2D rb;
     private float refreshRateMin = .5f, refreshRateMax = 1.2f, curRefreshRate;
     public float maxTime = 5f, curTime;
     private bool targetStart = false;
     private int randDirectionVal, randSignVal;
-    public Vector2 targetPos1, targetPos2, targetPos3;
 
     [Header("Init stuff")]
     public int targetLoopNum;
@@ -51,7 +49,6 @@ public class MiningManager : MonoBehaviour
     [SerializeField]
     public List<GameObject> rocks;
     private int rockPileIterator = 0;
-    private Vector2 bb;
 
     [Header("Probability and Score")]
     public int completedScore;
@@ -86,6 +83,12 @@ public class MiningManager : MonoBehaviour
 
         //start the first target, to then loop
         StartCoroutine(SpawnTargetLoop(initialWaitTime));
+
+        //reset player prefs to prevent cheating
+        PlayerPrefs.SetInt("XPtoget", 0);
+        PlayerPrefs.SetInt("LargeOreTotal", 0);
+        PlayerPrefs.SetInt("SmallOreTotal", 0);
+        PlayerPrefs.SetString("DoneMining", "false");
     }
 
     public void AdjustDifficulty()
@@ -147,24 +150,8 @@ public class MiningManager : MonoBehaviour
         crosshair.transform.SetParent(targetParent.transform);
         rb = crosshair.GetComponent<Rigidbody2D>();
 
-        RectTransform CanvasRect = cv.GetComponent<RectTransform>();
-
-        //update location of target on rocks
-        if(rockPileIterator == 0)
-        {  
-            curTarget.transform.localPosition = targetPos1;
-            crosshair.transform.localPosition = targetPos1;
-        }
-        else if(rockPileIterator == 1)
-        {
-            curTarget.transform.localPosition = targetPos2;
-            crosshair.transform.localPosition = targetPos2;
-        }
-        else if(rockPileIterator == 2)
-        {
-            curTarget.transform.localPosition = targetPos3;
-            crosshair.transform.localPosition = targetPos3;
-        }
+        curTarget.transform.localPosition = Vector3.zero;
+        crosshair.transform.localPosition = Vector3.zero;
         
         //set current time and update pos for moving the crosshair, bool for triggering the movement
         curRefreshRate = Random.Range(refreshRateMin, refreshRateMax);
@@ -176,7 +163,12 @@ public class MiningManager : MonoBehaviour
 
     public IEnumerator SpawnTargetLoop(float waitTime)
     {
+        //***** Set camera script call here!!!!!!!!!!!!!
+        camController.SwitchPriority("rest", rockPileIterator);
         yield return new WaitForSeconds(waitTime);
+        //call cam script to change targets
+        camController.SwitchPriority("focus", rockPileIterator);
+        yield return new WaitForSeconds(2f);
         SpawnTarget();
     }
     
@@ -265,7 +257,8 @@ public class MiningManager : MonoBehaviour
                 }
                 targetStart = false;
             }
-                /*#region view target distance constantly
+            /*
+                #region view target distance constantly
                 //***Constantly View target distance***\\
                 float dist2 = Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition);
                 if(dist2 <= perfectRange)
@@ -281,7 +274,8 @@ public class MiningManager : MonoBehaviour
                     uiText.text = "Bad";
                 }
                 
-                #endregion*/
+                #endregion
+                */
         } 
     }
 
@@ -301,10 +295,10 @@ public class MiningManager : MonoBehaviour
         string temp2 = smallOreTotal == 0 ? "" : "+" + smallOreTotal + " " + targetOre.name + " (Sm)";
         oresRecievedText.text = temp1 + temp2;
 
-        PlayerPrefs.SetInt("XPtoget",completedScore);
+        PlayerPrefs.SetInt("XPtoget", completedScore);
         PlayerPrefs.SetInt("LargeOreTotal", largeOreTotal);
         PlayerPrefs.SetInt("SmallOreTotal", smallOreTotal);
-        PlayerPrefs.SetInt("Justmined?", 1);
+        PlayerPrefs.SetString("DoneMining", "true");
     }
 
     //Moving the crosshair
@@ -322,9 +316,10 @@ public class MiningManager : MonoBehaviour
             }
             
             rb.velocity += new Vector2(joystick.Horizontal*str, joystick.Vertical*str);
+            //newCrosshair.GetComponent<RectTransform>().Translate(new Vector2(joystick.Horizontal*5, joystick.Vertical*5));
             
             //check if too far away from the target to stop the cross hair
-            if(Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition) < 400)
+            if(Vector2.Distance(rb.gameObject.transform.localPosition, curTarget.transform.localPosition) < 800)
             {
                 //check which direction to move
                 if(randDirectionVal == 1)
