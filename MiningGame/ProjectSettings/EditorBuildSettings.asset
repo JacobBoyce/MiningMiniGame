@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 36b89050e84b092439f799dfd9b26440
+  - enabled: 1
     path: Assets/Scenes/MiningSearch.unity
     guid: 7c577cbb89525c94cbc8ee53ba3596bf
   - enabled: 1

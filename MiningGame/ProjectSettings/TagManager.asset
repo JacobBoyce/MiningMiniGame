@@ -10,6 +10,7 @@ TagManager:
   - waypoint
   - Ore
   - PlayerSearchRadius
+  - MineSearchUI
   layers:
   - Default
   - TransparentFX

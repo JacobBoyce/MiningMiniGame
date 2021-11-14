@@ -164,8 +164,8 @@ public class MiningManager : MonoBehaviour
     public IEnumerator SpawnTargetLoop(float waitTime)
     {
         //***** Set camera script call here!!!!!!!!!!!!!
-        camController.SwitchPriority("rest", rockPileIterator);
-        yield return new WaitForSeconds(waitTime);
+        //camController.SwitchPriority("rest", rockPileIterator);
+        yield return new WaitForSeconds(1f);
         //call cam script to change targets
         camController.SwitchPriority("focus", rockPileIterator);
         yield return new WaitForSeconds(2f);

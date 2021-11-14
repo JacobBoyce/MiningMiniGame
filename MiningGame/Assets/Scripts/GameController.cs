@@ -11,13 +11,20 @@ using Sirenix.OdinInspector;
 public class GameController : MonoBehaviour
 {
     public InventoryBagUI invUI;
+    public GameObject endGameUI;
     public GameObject mineButton;
     private GameObject playerObj;
     public static GameController current;
     public event Action mineRockUIEnter, mineRockUIExit;
+    public bool outOfEnergy;
 
     //public List<inventoryItems> inventory = new List<inventoryItems>();
     [SerializeField] public InventoryBag bag = new InventoryBag();
+    private SaveMiningProgressObj savebag;
+
+    [SerializeField] public List<SpawningPoint> _spawnPoints;
+
+    private int moneyMade;
 
     //public PlayerController player;
     // Start is called before the first frame update
@@ -25,57 +32,33 @@ public class GameController : MonoBehaviour
     public void Awake()
     {
         current = this;
+        outOfEnergy = false;
         playerObj = GameObject.Find("Player");
+        savebag = new SaveMiningProgressObj();
+        if(File.Exists(Application.persistentDataPath  + "MiningInstProgress" + ".sav"))
+        {
+            savebag = SaveManager.Load<SaveMiningProgressObj>("MiningInstProgress");
+            bag = savebag.bag;
+            playerObj.transform.position = savebag.playerPos;
+            //this fixes the loading of the players position. (error lies in the update function of movement)
+            playerObj.GetComponent<ThirdPersonMovement>().StartCoroutine("TurnOnMove");
+            playerObj.GetComponent<PlayerController>().batteryLevel = savebag.batteryLevel;
+        }
+        else
+        {
+            playerObj.GetComponent<ThirdPersonMovement>().StartCoroutine("TurnOnMove");
+        }
     }
     void Start()
     {
         mineRockUIEnter += ShowMineUI;
         mineRockUIExit += HideMineUI;
 
-        #region Save Data in List form (doesnt work)
-        /*if(File.Exists(Application.persistentDataPath  + "Inventory" + ".sav"))
-        {
-            Debug.Log("file exsists");
-            bag = SaveManager.Load<InventoryBag>("Inventory");
-        }
-
         //check player pref bool if player just got done mining.
             //if true then reload player position from player pref and update inventory
         if(PlayerPrefs.HasKey("DoneMining") && PlayerPrefs.GetString("DoneMining").Equals("true"))
-        {
-            playerObj.transform.position = new Vector3(PlayerPrefs.GetFloat("PlayerPosX"),
-                                                    PlayerPrefs.GetFloat("PlayerPosY"),
-                                                    PlayerPrefs.GetFloat("PlayerPosZ"));
+        {                                                   
             PlayerPrefs.SetString("DoneMining","false");
-
-            //save values into the inventory then save the inventory
-            inventoryItems item = bag.inv2.Find(x => x.rockType == GetRockType(PlayerPrefs.GetString("Ore")));
-            Debug.Log(item.rockType);
-            int index = bag.inv2.FindIndex(x => x.rockType == GetRockType(PlayerPrefs.GetString("Ore")));
-            Debug.Log("Index " + index);
-            item.amountL += PlayerPrefs.GetInt("LargeOreTotal");
-            item.amountS += PlayerPrefs.GetInt("SmallOreTotal");
-            bag.inv2[index] = item;
-            SaveManager.Save<InventoryBag>(bag, "Inventory");
-
-        }*/
-        #endregion
-    
-        if(File.Exists(Application.persistentDataPath  + "Inventory" + ".sav"))
-        {
-            Debug.Log("file exsists");
-            bag = SaveManager.Load<InventoryBag>("Inventory");
-        }
-
-        //check player pref bool if player just got done mining.
-            //if true then reload player position from player pref and update inventory
-        if(PlayerPrefs.HasKey("DoneMining") && PlayerPrefs.GetString("DoneMining").Equals("true"))
-        {
-            playerObj.transform.position = new Vector3(PlayerPrefs.GetFloat("PlayerPosX"),
-                                                    PlayerPrefs.GetFloat("PlayerPosY"),
-                                                    PlayerPrefs.GetFloat("PlayerPosZ"));
-            PlayerPrefs.SetString("DoneMining","false");
-
 
             inventoryItems item = new inventoryItems();
             //save values into the inventory then save the inventory
@@ -83,26 +66,85 @@ public class GameController : MonoBehaviour
             {
                 if(bag.inv[i].rockType == GetRockType(PlayerPrefs.GetString("Ore")))
                 {
-                    Debug.Log(item.rockType);
                     bag.inv[i].amountL += PlayerPrefs.GetInt("LargeOreTotal");
                     bag.inv[i].amountS += PlayerPrefs.GetInt("SmallOreTotal");
                 }
             }
-            SaveManager.Save<InventoryBag>(bag, "Inventory");
+
+            SaveGameState();
+            //savebag.bag = bag;
+            //savebag.batteryLevel = playerObj.GetComponent<PlayerController>().batteryLevel;
+            //SaveManager.Save<SaveMiningProgressObj>(savebag, "MiningInstProgress");
         }
 
         invUI.PopulateInvUI(bag);
+
+        SpawnRockPoints();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
-        
+        if(outOfEnergy)
+        {
+            outOfEnergy = false;
+            //end the game and stuff/ maybe set time scale to 0 or pop up UI
+            //animate all ui to move off screen and blur background then bring in endgame UI
+            GameObject[] uiEle = GameObject.FindGameObjectsWithTag("MineSearchUI");
+            for(int i = 0; i < uiEle.Length; i++)
+            {
+                uiEle[i].SetActive(false);
+            }
+            endGameUI.SetActive(true);
+            //CalculateMoney();
+            PlayerPrefs.SetInt("MoneyMade", moneyMade);
+            //in main menu check if this player pref is 1, 
+                //if it is and the file exsists then add the money and delete the file
+            PlayerPrefs.SetInt("MoneyCalculated", 1);
+
+            SaveGameState();
+            //when back at the main menu
+                //-delete the file after the money has been transfered (thru player prefs, then set it back to 0)
+                //-check player prefs if money has been add to stash?
+        }
+    }
+
+    public void SaveGameState()
+    {
+        savebag.bag = bag;
+        savebag.batteryLevel = playerObj.GetComponent<PlayerController>().batteryLevel;
+        savebag.playerPos = playerObj.transform.position;
+        SaveManager.Save<SaveMiningProgressObj>(savebag, "MiningInstProgress");
+    }
+
+    public void SpawnRockPoints()
+    {
+        int spawnMax = 2, spawnCount = 0;
+
+        foreach(SpawningPoint sp in _spawnPoints)
+        {
+            sp.TurnOff();
+        }
+
+        while(spawnCount < spawnMax)
+        {
+            int ind1 = UnityEngine.Random.Range(0, _spawnPoints.Count-1);
+
+            if(_spawnPoints[ind1].isOff == false)
+            {
+                break;
+            }
+            else
+            {
+                _spawnPoints[ind1].TurnOn();
+                _spawnPoints[ind1].MoveRockSpot();
+                spawnCount++;
+            }
+        }
     }
 
     public void DeleteFilez()
     {
-        SaveManager.DeleteFile("Inventory");
+        SaveManager.DeleteFile("MiningInstProgress");
     }
 
     public void ShowMineUI()
@@ -135,13 +177,24 @@ public class GameController : MonoBehaviour
         // choose what rock to mine \\ 
         // send and save for other scene \\
         PlayerPrefs.SetString("Ore", "Copper");
-        //save player position for when they come back
-        PlayerPrefs.SetFloat("PlayerPosX",playerObj.transform.position.x);
-        PlayerPrefs.SetFloat("PlayerPosY",playerObj.transform.position.y);
-        PlayerPrefs.SetFloat("PlayerPosZ",playerObj.transform.position.z);
+
+        //save inv and batterylevel
+        
+        playerObj.GetComponent<PlayerController>().SpendMiningEnergy();
+        SaveGameState();
+        /*
+        savebag.bag = bag;
+        savebag.batteryLevel = playerObj.GetComponent<PlayerController>().batteryLevel;
+        savebag.playerPos = playerObj.transform.position;
+        SaveManager.Save<SaveMiningProgressObj>(savebag, "MiningInstProgress");*/
 
         //player.SaveStatsForMining();
         SceneManager.LoadScene("MiningScene");
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 
     /*public void PrintInventory()
