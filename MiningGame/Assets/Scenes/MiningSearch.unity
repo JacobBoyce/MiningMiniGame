@@ -2102,6 +2102,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 285819214382262458, guid: 0d3726c90acc2974a8fa13bfc05a9092,
+        type: 3}
+      propertyPath: m_TagString
+      value: SpawnPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 6900063332958857280, guid: 0d3726c90acc2974a8fa13bfc05a9092,
         type: 3}
       propertyPath: m_Name
@@ -2294,12 +2299,12 @@ PrefabInstance:
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 413.4162
+      value: 298.8168
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 413.4159
+      value: 298.8167
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
@@ -2389,12 +2394,12 @@ PrefabInstance:
     - target: {fileID: 2929252285020697096, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 191.5896
+      value: 170.1023
       objectReference: {fileID: 0}
     - target: {fileID: 2929252285020697096, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 191.5896
+      value: 170.1023
       objectReference: {fileID: 0}
     - target: {fileID: 2929252285020697096, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
@@ -2686,7 +2691,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698480563}
-  m_LocalRotation: {x: 0.33734784, y: -0.000000039676202, z: 0.000000014218147, w: 0.9413801}
+  m_LocalRotation: {x: 0.3373478, y: 1.2144849e-15, z: -3.1842687e-16, w: 0.9413801}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3080,7 +3085,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908276164}
-  m_LocalRotation: {x: 0.33734787, y: -0.000000039676735, z: 0.000000014218277, w: 0.9413801}
+  m_LocalRotation: {x: 0.33734784, y: 2.1586785e-10, z: 7.772312e-11, w: 0.9413801}
   m_LocalPosition: {x: 88.96, y: 27.381, z: 56.559998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -3202,7 +3207,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939766836}
-  m_LocalRotation: {x: 0.35781088, y: -0.00000001094579, z: 0.000000004194205, w: 0.9337941}
+  m_LocalRotation: {x: 0.35781085, y: 0.000000029904456, z: -0.000000011458778, w: 0.9337941}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3279,7 +3284,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968647953}
-  m_LocalRotation: {x: 0.35781088, y: -0.000000010945793, z: 0.0000000041942054, w: 0.9337941}
+  m_LocalRotation: {x: 0.35781085, y: 0.00000002990446, z: -0.000000011458779, w: 0.9337941}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5233,7 +5238,7 @@ MonoBehaviour:
   curXP: 0
   maxXP: 10
   batteryLevel: 100
-  drainRate: 0.02
+  drainRate: 0.04
   miningCost: 10
   hPbarUI: {fileID: 589472395}
 --- !u!114 &1648459360
@@ -5897,6 +5902,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 285819214382262458, guid: 0d3726c90acc2974a8fa13bfc05a9092,
+        type: 3}
+      propertyPath: m_TagString
+      value: SpawnPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 6900063332958857280, guid: 0d3726c90acc2974a8fa13bfc05a9092,
         type: 3}
       propertyPath: m_Icon
@@ -5982,6 +5992,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 285819214382262458, guid: 0d3726c90acc2974a8fa13bfc05a9092,
+        type: 3}
+      propertyPath: m_TagString
+      value: SpawnPoint
+      objectReference: {fileID: 0}
     - target: {fileID: 6900063332958857280, guid: 0d3726c90acc2974a8fa13bfc05a9092,
         type: 3}
       propertyPath: m_Name

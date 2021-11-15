@@ -8,7 +8,7 @@ public class SpawningPoint : MonoBehaviour
     private GameObject _instancedRockSpot;
     public bool isOff;
     private Vector3 range;
-    void Start()
+    void Awake()
     {
         _instancedRockSpot = Instantiate(rockSpotPrefab, parentObj.transform);
         _instancedRockSpot.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);

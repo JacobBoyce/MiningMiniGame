@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "9A251FFAZ00BDG",
         "name": "com.DefaultCompany.MiningGame",
-        "processId": 30479,
+        "processId": 25886,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,97 +11,55 @@
         {
             "deviceId": "9A251FFAZ00BDG",
             "name": "com.DefaultCompany.MiningGame",
-            "processId": 20487,
-            "exited": true
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 19950,
-            "exited": true
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 20502,
-            "exited": true
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 21873,
-            "exited": true
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 22681,
-            "exited": true
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 10841,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 13087,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 13985,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 14546,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 30771,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 26425,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 28681,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 7741,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
-            "processId": 8796,
-            "exited": false
-        },
-        {
-            "deviceId": "9A251FFAZ00BDG",
-            "name": "com.DefaultCompany.MiningGame",
             "processId": 9309,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "9A251FFAZ00BDG",
             "name": "com.DefaultCompany.MiningGame",
             "processId": 30479,
+            "exited": true
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 11610,
+            "exited": true
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 13186,
+            "exited": true
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 15066,
+            "exited": true
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 22169,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 22791,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 24143,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 25886,
             "exited": false
         }
     ],

@@ -175,16 +175,21 @@ public class GameController : MonoBehaviour
 
     public void SpawnRockPoints()
     {
-        int spawnMax = 2, spawnCount = 0;
+        //int spawnMax = 2, spawnCount = 0;
 
         foreach(SpawningPoint sp in _spawnPoints)
         {
             sp.TurnOff();
         }
 
-        while(spawnCount < spawnMax)
+        int ind1 = UnityEngine.Random.Range(0, _spawnPoints.Count);
+        _spawnPoints[ind1].TurnOn();
+        _spawnPoints[ind1].MoveRockSpot();
+
+        /*while(spawnCount < spawnMax)
         {
-            int ind1 = UnityEngine.Random.Range(0, _spawnPoints.Count-1);
+            int ind1 = UnityEngine.Random.Range(0, _spawnPoints.Count);
+            Debug.Log(ind1);
 
             if(_spawnPoints[ind1].isOff == false)
             {
@@ -196,7 +201,7 @@ public class GameController : MonoBehaviour
                 _spawnPoints[ind1].MoveRockSpot();
                 spawnCount++;
             }
-        }
+        }*/
     }
 
     public void DeleteFilez()

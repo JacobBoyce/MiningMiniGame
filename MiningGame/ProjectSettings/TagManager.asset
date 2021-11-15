@@ -11,6 +11,7 @@ TagManager:
   - Ore
   - PlayerSearchRadius
   - MineSearchUI
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX

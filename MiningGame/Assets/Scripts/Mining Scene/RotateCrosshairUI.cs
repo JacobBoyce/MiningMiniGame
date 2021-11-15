@@ -14,6 +14,6 @@ public class RotateCrosshairUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.GetComponent<RectTransform>().Rotate(spinVector);
+        this.GetComponent<RectTransform>().Rotate(spinVector*(Time.deltaTime / Time.timeScale));
     }
 }
