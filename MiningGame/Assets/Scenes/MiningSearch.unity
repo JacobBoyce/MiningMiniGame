@@ -3279,7 +3279,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968647953}
-  m_LocalRotation: {x: 0.35781085, y: 0.00000002990446, z: -0.000000011458779, w: 0.9337941}
+  m_LocalRotation: {x: 0.35781088, y: -0.000000010945793, z: 0.0000000041942054, w: 0.9337941}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5108,6 +5108,16 @@ MonoBehaviour:
       rockType: 2
       amountL: 0
       amountS: 0
+  orePrices:
+  - oreName: Copper
+    orePriceL: 60
+    orePriceS: 25
+  - oreName: Iron
+    orePriceL: 100
+    orePriceS: 45
+  - oreName: Coal
+    orePriceL: 75
+    orePriceS: 40
   _spawnPoints:
   - {fileID: 1536625431}
   - {fileID: 463943251}

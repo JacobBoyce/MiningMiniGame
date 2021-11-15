@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using UnityEngine.SceneManagement;
 using System;
 using TMPro;
@@ -20,6 +21,15 @@ public class GameController : MonoBehaviour
 
     //public List<inventoryItems> inventory = new List<inventoryItems>();
     [SerializeField] public InventoryBag bag = new InventoryBag();
+    [Serializable]
+    public struct OrePrices
+    {
+        public string oreName;
+        public int orePriceL;
+        public int orePriceS;
+    }
+    [SerializeField] public OrePrices[] orePrices; 
+    private int calcAmount;
     private SaveMiningProgressObj savebag;
 
     [SerializeField] public List<SpawningPoint> _spawnPoints;
@@ -95,7 +105,7 @@ public class GameController : MonoBehaviour
                 uiEle[i].SetActive(false);
             }
             endGameUI.SetActive(true);
-            //CalculateMoney();
+            CalculateMoney();
             PlayerPrefs.SetInt("MoneyMade", moneyMade);
             //in main menu check if this player pref is 1, 
                 //if it is and the file exsists then add the money and delete the file
@@ -106,6 +116,53 @@ public class GameController : MonoBehaviour
                 //-delete the file after the money has been transfered (thru player prefs, then set it back to 0)
                 //-check player prefs if money has been add to stash?
         }
+    }
+
+    public void CalculateMoney()
+    {
+        //cycle thru inv and get amount and then multiply it by rock amount
+        for(int i = 0; i < bag.inv.Length; i ++)
+        {
+            if(bag.inv[i].rockType == inventoryItems.RockType.COPPER)
+            {
+                //use this var if needed to use in the UI or something
+                int temp = GetOrePrice(bag.inv[i].rockName, bag.inv[i].amountL, bag.inv[i].amountS);
+                calcAmount += temp;
+            }
+            else if(bag.inv[i].rockType == inventoryItems.RockType.IRON)
+            {
+                int temp = GetOrePrice(bag.inv[i].rockName, bag.inv[i].amountL, bag.inv[i].amountS);
+                calcAmount += temp;
+            }
+            else if(bag.inv[i].rockType == inventoryItems.RockType.COAL)
+            {
+                int temp = GetOrePrice(bag.inv[i].rockName, bag.inv[i].amountL, bag.inv[i].amountS);
+                calcAmount += temp;
+            }
+        }
+        moneyMade = calcAmount;
+    }
+
+    public int GetOrePrice(string rName, int sizeL, int sizeS)
+    {
+        for(int i = 0; i < orePrices.Length; i++)
+        {
+            if(orePrices[i].oreName.Equals(rName))
+            {
+                return (orePrices[i].orePriceL * sizeL) + (orePrices[i].orePriceS * sizeS);
+            }
+        }
+        return 0;
+    }
+
+    void OnApplicationPause()
+    {
+        SaveGameState();
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveGameState();
     }
 
     public void SaveGameState()
@@ -175,20 +232,11 @@ public class GameController : MonoBehaviour
     public void StartMining()
     {
         // choose what rock to mine \\ 
-        // send and save for other scene \\
         PlayerPrefs.SetString("Ore", "Copper");
-
-        //save inv and batterylevel
         
         playerObj.GetComponent<PlayerController>().SpendMiningEnergy();
         SaveGameState();
-        /*
-        savebag.bag = bag;
-        savebag.batteryLevel = playerObj.GetComponent<PlayerController>().batteryLevel;
-        savebag.playerPos = playerObj.transform.position;
-        SaveManager.Save<SaveMiningProgressObj>(savebag, "MiningInstProgress");*/
 
-        //player.SaveStatsForMining();
         SceneManager.LoadScene("MiningScene");
     }
 
@@ -196,14 +244,6 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene("MainScene");
     }
-
-    /*public void PrintInventory()
-    {
-        foreach(inventoryItems rock in inventory)
-        {
-            Debug.Log(rock.rockType + " " + rock.amountL + " : " + rock.amountS);
-        }
-    }*/
 
     public inventoryItems.RockType GetRockType(string rockname)
     {
