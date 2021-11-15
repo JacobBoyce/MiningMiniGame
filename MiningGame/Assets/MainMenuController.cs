@@ -14,6 +14,7 @@ public class MainMenuController : MonoBehaviour
     public int money;
     public void Awake()
     {
+        saveProgress = new MainProgressSave();
         //load save file
         if(File.Exists(Application.persistentDataPath  + "MainSaveProgress" + ".sav"))
         {
@@ -37,6 +38,7 @@ public class MainMenuController : MonoBehaviour
 
             money += PlayerPrefs.GetInt("MoneyMade");
             moneyText.text = "Money: $" + money;
+            saveProgress.money = money;
             SaveManager.Save<MainProgressSave>(saveProgress, "MainSaveProgress");
 
             //delete save file for mining search
