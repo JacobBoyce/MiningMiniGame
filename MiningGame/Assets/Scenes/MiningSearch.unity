@@ -3284,7 +3284,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968647953}
-  m_LocalRotation: {x: 0.35781085, y: 0.00000002990446, z: -0.000000011458779, w: 0.9337941}
+  m_LocalRotation: {x: 0.35781088, y: -0.000000010945793, z: 0.0000000041942054, w: 0.9337941}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3335,8 +3335,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 7.1
-  m_Range: 13.94
+  m_Intensity: 7
+  m_Range: 14
   m_SpotAngle: 116.814804
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -5211,7 +5211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystick: {fileID: 2065824620}
   controller: {fileID: 1648459357}
-  speed: 10
+  speed: 8
   turnSmoothTIme: 0.1
   groundCheck: {fileID: 1278451764}
   groundDist: 0.4
@@ -5232,13 +5232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00bb416225deb044aa14e2eabfef427e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 1
   power: 60
   focus: 50
-  curXP: 0
-  maxXP: 10
   batteryLevel: 100
-  drainRate: 0.04
+  drainRate: 0.06
   miningCost: 10
   hPbarUI: {fileID: 589472395}
 --- !u!114 &1648459360

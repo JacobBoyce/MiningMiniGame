@@ -76,6 +76,7 @@ public class MasterGearInfo
     [SerializeField] public string upName;
     [SerializeField] public int level;
     [SerializeField] public int[] upCost;
+    [SerializeField] public float[] upgradeValues;
     [SerializeField] public Sprite upImg;
 
     public void Setlevel(int lvl)

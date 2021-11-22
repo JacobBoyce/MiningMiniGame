@@ -622,23 +622,53 @@ MonoBehaviour:
   gearInfo:
   - upName: Battery Capacity
     level: 0
-    upCost: f4010000e8030000dc050000
+    upCost: f4010000e8030000dc050000d0070000c4090000
+    upgradeValues:
+    - 120
+    - 140
+    - 160
+    - 180
+    - 200
     upImg: {fileID: 21300000, guid: b64f4b7068d7cf543a0dccd9ae5b482c, type: 3}
   - upName: Battery Efficiency
     level: 0
-    upCost: 260200001a04000040060000
+    upCost: 260200001a04000040060000d0070000c4090000
+    upgradeValues:
+    - 0.05
+    - 0.04
+    - 0.03
+    - 0.02
+    - 0.01
     upImg: {fileID: 21300000, guid: b64f4b7068d7cf543a0dccd9ae5b482c, type: 3}
   - upName: Scanner Range
     level: 0
-    upCost: 58020000b0040000d0070000
+    upCost: 58020000b0040000d0070000c4090000b80b0000
+    upgradeValues:
+    - 8
+    - 9
+    - 10
+    - 12
+    - 13
     upImg: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - upName: Engine Upgrade
     level: 0
-    upCost: 840300004605000034080000
+    upCost: 840300004605000034080000b80b0000ac0d0000
+    upgradeValues:
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
     upImg: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - upName: Flash Light
     level: 0
-    upCost: 58020000780500009e070000
+    upCost: 58020000780500009e07000060090000b80b0000
+    upgradeValues:
+    - 18.2
+    - 22.4
+    - 26.6
+    - 29.8
+    - 35
     upImg: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &563498600
 GameObject:

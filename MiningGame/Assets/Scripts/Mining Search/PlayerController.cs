@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public int level;
-    public int power, focus, curXP, maxXP;
+    [Header("Level up values")]
+    public int power;
+    public int focus;
     public float batteryLevel, drainRate, miningCost;
-    private ThirdPersonMovement movementScript;
+    
+    [Space(10)]
     public Image hPbarUI;
+    private ThirdPersonMovement movementScript;
     private bool msgSent;
 
     public void Awake()
@@ -17,6 +20,9 @@ public class PlayerController : MonoBehaviour
         movementScript = this.GetComponent<ThirdPersonMovement>();
         hPbarUI.fillAmount = batteryLevel / 100;
         msgSent = false;
+        //get values from player prefsand set them here
+        //playerprefs.get "mining power" 60
+        //playerprefs.get "mining power level" 1
     }
 
     public void Update()
@@ -48,33 +54,9 @@ public class PlayerController : MonoBehaviour
         batteryLevel -= miningCost;
     }
 
-    public void CheckLevelUp()
-    {
-        if(curXP >= maxXP)
-        {
-            level++;
-            curXP -= maxXP;
-            UpdateMaxXp();
-            if(curXP <= 0) 
-            {
-                curXP = 0;
-            }
-            else
-            {
-                CheckLevelUp();
-            }
-        }
-    }
-
     public void SaveStatsForMining()
     {
-        PlayerPrefs.SetInt("Plevel", level);
         PlayerPrefs.SetInt("Ppower", power);
         PlayerPrefs.SetInt("Pfocus", focus);
-    }
-
-    public void UpdateMaxXp()
-    {
-        maxXP += maxXP * level;
     }
 }
