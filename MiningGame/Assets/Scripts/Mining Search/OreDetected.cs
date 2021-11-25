@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class OreDetected : MonoBehaviour
 {
-    public GameObject particleSys;
-    // Start is called before the first frame update
-    void Start()
+    public enum OreTypes
     {
-        
+        NONE,
+        COPPER,
+        IRON, 
+        COAL
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject particleSys;
+
+    public OreTypes oreT;
+
+    // Start is called before the first frame update
+    void Start()
     {
         
     }

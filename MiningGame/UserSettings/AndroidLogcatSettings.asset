@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "9A251FFAZ00BDG",
         "name": "com.DefaultCompany.MiningGame",
-        "processId": 25886,
+        "processId": 20360,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -60,6 +60,24 @@
             "deviceId": "9A251FFAZ00BDG",
             "name": "com.DefaultCompany.MiningGame",
             "processId": 25886,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 12700,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 19531,
+            "exited": false
+        },
+        {
+            "deviceId": "9A251FFAZ00BDG",
+            "name": "com.DefaultCompany.MiningGame",
+            "processId": 20360,
             "exited": false
         }
     ],

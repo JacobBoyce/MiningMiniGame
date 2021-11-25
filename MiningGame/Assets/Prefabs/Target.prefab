@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8de061b965dad459ff9eb36649a2cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinVector: {x: 0, y: 0, z: 120}
+  spinVector: {x: 0, y: 0, z: 200}
 --- !u!1 &6158301527042388133
 GameObject:
   m_ObjectHideFlags: 0

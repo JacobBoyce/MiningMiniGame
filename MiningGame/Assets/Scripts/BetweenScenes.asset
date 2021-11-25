@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e01bde531dc6743a7fe274e036b197, type: 3}
+  m_Name: BetweenScenes
+  m_EditorClassIdentifier: 
+  saveList:
+  - upName: Mining Drill
+    level: 0
+  - upName: Mining Focus
+    level: 1
+  - upName: Battery Capacity
+    level: 1
+  - upName: Battery Efficiency
+    level: 1
+  - upName: Scanner Range
+    level: 1
+  - upName: Engine Upgrade
+    level: 0
+  - upName: Flash Light
+    level: 0

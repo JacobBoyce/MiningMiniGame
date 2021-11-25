@@ -7,6 +7,8 @@ using TMPro;
 public class ShopController : MonoBehaviour
 {
     public GameObject parentObjectForShop, upGradeUIPrefab;
+    [SerializeField]
+    public LevelPassSO saveLevelsForNextScene;
     public TextMeshProUGUI moneytext;
     public MainMenuController mainMenuController;
     [SerializeField]
@@ -68,7 +70,19 @@ public class ShopController : MonoBehaviour
         //save
         mainMenuController.SaveGameProgress();
     }
+
+    public void SavelevelsForNext()
+    {
+        int i = 0;
+        foreach(SaveStuffObj ss in saveLevelsForNextScene.saveList)
+        {
+            ss.upName = gearInfo[i].upName;
+            ss.level = gearInfo[i].level;
+            i++;
+        }
+    }
 }
+
 
 [System.Serializable]
 public class MasterGearInfo
@@ -76,7 +90,7 @@ public class MasterGearInfo
     [SerializeField] public string upName;
     [SerializeField] public int level;
     [SerializeField] public int[] upCost;
-    [SerializeField] public float[] upgradeValues;
+    [SerializeField] public float[] upgradeValues;//////
     [SerializeField] public Sprite upImg;
 
     public void Setlevel(int lvl)

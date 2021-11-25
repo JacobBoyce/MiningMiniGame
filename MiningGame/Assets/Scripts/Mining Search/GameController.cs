@@ -12,12 +12,14 @@ using Sirenix.OdinInspector;
 public class GameController : MonoBehaviour
 {
     public InventoryBagUI invUI;
+    public EndGameMaths outputObj;
     public GameObject endGameUI;
     public GameObject mineButton;
     private GameObject playerObj;
     public static GameController current;
     public event Action mineRockUIEnter, mineRockUIExit;
     public bool outOfEnergy;
+    public OreDetected.OreTypes currentOre;
 
     //public List<inventoryItems> inventory = new List<inventoryItems>();
     [SerializeField] public InventoryBag bag = new InventoryBag();
@@ -45,6 +47,8 @@ public class GameController : MonoBehaviour
         outOfEnergy = false;
         playerObj = GameObject.Find("Player");
         savebag = new SaveMiningProgressObj();
+        playerObj.GetComponent<PlayerController>().LoadSaveObjStats();
+
         if(File.Exists(Application.persistentDataPath  + "MiningInstProgress" + ".sav"))
         {
             savebag = SaveManager.Load<SaveMiningProgressObj>("MiningInstProgress");
@@ -112,9 +116,6 @@ public class GameController : MonoBehaviour
             PlayerPrefs.SetInt("MoneyCalculated", 1);
 
             SaveGameState();
-            //when back at the main menu
-                //-delete the file after the money has been transfered (thru player prefs, then set it back to 0)
-                //-check player prefs if money has been add to stash?
         }
     }
 
@@ -145,11 +146,26 @@ public class GameController : MonoBehaviour
 
     public int GetOrePrice(string rName, int sizeL, int sizeS)
     {
+        int tempL, tempS, totalTemp;
         for(int i = 0; i < orePrices.Length; i++)
         {
             if(orePrices[i].oreName.Equals(rName))
             {
-                return (orePrices[i].orePriceL * sizeL) + (orePrices[i].orePriceS * sizeS);
+                tempL = orePrices[i].orePriceL * sizeL;
+                tempS = orePrices[i].orePriceS * sizeS;
+                totalTemp = tempL + tempS;
+                outputObj.CalcluateSale(orePrices[i].oreName + ": \n");
+                if(tempL != 0)
+                {
+                    outputObj.CalcluateSale(orePrices[i].orePriceL + " X " + sizeL + " = " + tempL + "\n");
+                }
+                
+                if(tempS !=0)
+                {
+                    outputObj.CalcluateSale(orePrices[i].orePriceS + " X " + sizeS + " = " + tempS + "\n");
+                }
+                outputObj.CalcluateSale("\t\t\t = " + totalTemp + "\n\n");
+                return totalTemp;
             }
         }
         return 0;
@@ -183,8 +199,11 @@ public class GameController : MonoBehaviour
         }
 
         int ind1 = UnityEngine.Random.Range(0, _spawnPoints.Count);
+        Debug.Log("count: " + _spawnPoints.Count);
+        Debug.Log(ind1);
         _spawnPoints[ind1].TurnOn();
         _spawnPoints[ind1].MoveRockSpot();
+        _spawnPoints[ind1]._instancedRockSpot.GetComponent<OreDetected>().oreT = (OreDetected.OreTypes)UnityEngine.Random.Range(1, 4);
 
         /*while(spawnCount < spawnMax)
         {
@@ -207,6 +226,7 @@ public class GameController : MonoBehaviour
     public void DeleteFilez()
     {
         SaveManager.DeleteFile("MiningInstProgress");
+        SaveManager.DeleteFile("MainSaveProgress");
     }
 
     public void ShowMineUI()
@@ -237,7 +257,7 @@ public class GameController : MonoBehaviour
     public void StartMining()
     {
         // choose what rock to mine \\ 
-        PlayerPrefs.SetString("Ore", "Copper");
+        PlayerPrefs.SetString("Ore", currentOre.ToString());
         
         playerObj.GetComponent<PlayerController>().SpendMiningEnergy();
         SaveGameState();

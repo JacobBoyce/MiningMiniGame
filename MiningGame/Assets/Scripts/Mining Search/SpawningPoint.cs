@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawningPoint : MonoBehaviour
 {
     public GameObject rockSpotPrefab, parentObj;
-    private GameObject _instancedRockSpot;
+    public GameObject _instancedRockSpot;
     public bool isOff;
     private Vector3 range;
     void Awake()

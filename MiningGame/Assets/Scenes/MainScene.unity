@@ -616,10 +616,22 @@ MonoBehaviour:
   parentObjectForShop: {fileID: 44567263}
   upGradeUIPrefab: {fileID: 4957014020746423785, guid: 935e73b4b776d444583e2f32a2c30893,
     type: 3}
+  saveLevelsForNextScene: {fileID: 11400000, guid: 83652263340d76d4dae971e64efa0fad,
+    type: 2}
   moneytext: {fileID: 1209043603}
   mainMenuController: {fileID: 393508244}
   upgradeParents: []
   gearInfo:
+  - upName: Mining Drill
+    level: 0
+    upCost: 84030000d0070000ac0d0000881300004c1d0000
+    upgradeValues: []
+    upImg: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  - upName: Mining Focus
+    level: 0
+    upCost: 58020000dc050000fc080000800c000030110000
+    upgradeValues: []
+    upImg: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - upName: Battery Capacity
     level: 0
     upCost: f4010000e8030000dc050000d0070000c4090000

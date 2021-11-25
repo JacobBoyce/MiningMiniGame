@@ -79,6 +79,7 @@ public class MainMenuController : MonoBehaviour
 
     public void StartMiningSearch()
     {
+        shopController.SavelevelsForNext();
         SceneManager.LoadScene("MiningSearch");
     }
 
